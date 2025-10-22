@@ -263,7 +263,7 @@
                                 <p class="hidden text-red-500 text-sm mt-2">Gagal memuat gambar QRIS.</p>
                             </div>
                         </div>
-                        <a href="https://wa.me/6281387454259?text=Assalamualaikum,%20saya%20ingin%20konfirmasi%20donasi%20untuk%20Masjid%20Baitul%20Fattah." target="_blank" class="w-full bg-green-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center space-x-2">
+                        <a href="https://wa.me/62 81387454259?text=Assalamualaikum,%20saya%20ingin%20konfirmasi%20donasi%20untuk%20Masjid%20Baitul%20Fattah." target="_blank" class="w-full bg-green-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center space-x-2">
                             <i class="fab fa-whatsapp"></i>
                             <span>Konfirmasi via WhatsApp</span>
                         </a>
@@ -361,8 +361,8 @@
                 <div id="berita-modal-content" class="hidden">
                     <img id="berita-modal-img" src="" alt="Gambar Berita" class="w-full h-64 object-cover rounded-lg mb-4">
                     <p id="berita-modal-date" class="text-sm text-gray-500 mb-2"></p>
-                    <!-- 'prose' class dari plugin typography untuk auto-format teks -->
-                    <div id="berita-modal-text" class="prose max-w-none text-gray-700"></div>
+                    <!-- 'prose' class dihapus, diganti dengan text-justify dan space-y-4 (untuk jarak paragraf) -->
+                    <div id="berita-modal-text" class="max-w-none text-gray-700 text-justify space-y-4"></div>
                 </div>
             </div>
         </div>
@@ -389,6 +389,21 @@
         const db = getFirestore(app);
 
         let cachedBeritaData = null; // Tambahkan cache untuk berita
+
+        // --- Helper function baru untuk memotong teks ---
+        function truncateText(text, maxLength) {
+            if (!text) return '';
+            if (text.length <= maxLength) {
+                return text;
+            }
+            // Cari spasi terakhir sebelum batas maxLength untuk menghindari pemotongan kata
+            const lastSpace = text.lastIndexOf(' ', maxLength);
+            if (lastSpace > maxLength / 2) { // Hanya potong di spasi jika masuk akal
+                return text.substring(0, lastSpace) + '...';
+            }
+            // Jika tidak ada spasi yang baik, potong paksa
+            return text.substring(0, maxLength) + '...';
+        }
 
         // --- Fungsi untuk mengambil dan menampilkan berita dari Firestore ---
         async function renderBerita() {
@@ -418,13 +433,17 @@
                         ? berita.tanggal.toDate().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
                         : 'Tanggal tidak valid';
 
+                    // --- Perubahan di sini: Panggil fungsi truncateText ---
+                    const kutipanSingkat = truncateText(berita.kutipan, 100); // Batasi 100 karakter
+
                     const beritaCardHTML = `
                         <div class="bg-white rounded-lg shadow-md overflow-hidden group">
                             <img src="${berita.gambarUrl || 'https://placehold.co/600x400/34d399/14532d?text=Gambar+Berita'}" alt="${berita.judul}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="p-6">
                                 <p class="text-sm text-gray-500 mb-2">${beritaDate}</p>
                                 <h3 class="font-semibold text-lg mb-2 text-gray-800">${berita.judul}</h3>
-                                <p class="text-sm mb-4">${berita.kutipan || ''}</p>
+                                <!-- Gunakan kutipanSingkat di sini -->
+                                <p class="text-sm mb-4">${kutipanSingkat || ''}</p>
                                 <!-- Ganti <a> dengan <button> dan tambahkan data-id -->
                                 <button data-id="${doc.id}" class="open-berita-modal-btn text-green-600 font-semibold hover:underline focus:outline-none">Baca Selengkapnya &rarr;</button>
                             </div>
@@ -479,9 +498,38 @@
                 ? newsItem.tanggal.toDate().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
                 : 'Tanggal tidak valid';
 
-            // Gunakan 'isi_lengkap' jika ada, jika tidak, gunakan 'kutipan'
-            // Asumsi 'isi_lengkap' atau 'kutipan' bisa berisi HTML, jadi pakai .innerHTML
-            modalText.innerHTML = newsItem.isi_lengkap || newsItem.kutipan || 'Konten tidak tersedia.';
+            
+            // --- LOGIKA BARU UNTUK FORMAT PARAGRAF & JUSTIFY ---
+
+            // Ambil konten mentah
+            const rawContent = newsItem.isi_lengkap || newsItem.kutipan || 'Konten tidak tersedia.';
+            
+            // Cek jika konten sepertinya *bukan* HTML (tidak mengandung tag <p> atau <div>)
+            // Ini adalah deteksi sederhana, jika tidak ada tag HTML, kita anggap plain text
+            const isPlainText = !/<\/?[a-z][\s\S]*>/i.test(rawContent);
+            
+            let formattedContent;
+
+            if (isPlainText) {
+                // Jika ini plain text, ubah \n menjadi paragraf <p> agar 'space-y-4' berfungsi
+                formattedContent = rawContent
+                    .split(/\n\s*\n/) // Pisahkan berdasarkan baris kosong (paragraf baru)
+                    .map(para => para.trim()) // Hapus spasi
+                    .filter(para => para.length > 0) // Hapus baris kosong
+                    .map(para => {
+                        // Ubah sisa newline tunggal (jika ada) di dalam paragraf menjadi <br>
+                        const lines = para.split('\n').join('<br>');
+                        return `<p>${lines}</p>`; // Bungkus dengan tag <p>
+                    })
+                    .join(''); // Gabungkan semua paragraf
+            } else {
+                // Jika ini sudah HTML (misal dari Rich Text Editor), biarkan apa adanya
+                formattedContent = rawContent;
+            }
+            
+            modalText.innerHTML = formattedContent;
+            // --- AKHIR LOGIKA BARU ---
+
 
             // Sembunyikan loader, tampilkan konten
             modalLoader.classList.add('hidden');
@@ -826,6 +874,8 @@
     </script>
 </body>
 </html>
+
+
 
 
 
