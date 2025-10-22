@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Resmi DKM Baitul Fattah</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tambahkan plugin typography untuk styling teks artikel di modal -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -36,6 +38,7 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        /* Style untuk Modal .modal-hidden dihapus karena kita akan pakai class 'hidden' dari Tailwind */
     </style>
 </head>
 <body class="bg-gray-50 text-gray-700">
@@ -54,6 +57,7 @@
                     <nav class="ml-10 flex items-baseline space-x-4">
                         <a href="#beranda" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-green-600">Beranda</a>
                         <a href="#profil" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-green-600">Profil</a>
+                        <a href="#pengurus" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-green-600">Pengurus</a>
                         <a href="#jadwal" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-green-600">Jadwal</a>
                         <a href="#berita" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-green-600">Berita</a>
                         <a href="#keuangan" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-green-600">Keuangan</a>
@@ -76,6 +80,7 @@
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#beranda" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-green-600 hover:bg-gray-50">Beranda</a>
                 <a href="#profil" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-green-600 hover:bg-gray-50">Profil</a>
+                <a href="#pengurus" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-green-600 hover:bg-gray-50">Pengurus</a>
                 <a href="#jadwal" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-green-600 hover:bg-gray-50">Jadwal</a>
                 <a href="#berita" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-green-600 hover:bg-gray-50">Berita</a>
                 <a href="#keuangan" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-green-600 hover:bg-gray-50">Keuangan</a>
@@ -132,6 +137,29 @@
                             <li>Menjadi motor penggerak kegiatan sosial dan pemberdayaan ekonomi umat.</li>
                             <li>Membangun ukhuwah islamiyah di antara jamaah dan masyarakat.</li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Pengurus -->
+        <section id="pengurus" class="py-20 bg-white scroll-mt-16">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title">Struktur Pengurus DKM</h2>
+                <p class="section-subtitle">Mengenal tim DKM Baitul Fattah yang berkhidmat untuk melayani jamaah periode 2025-2028.</p>
+                
+                <!-- Tombol untuk membuka modal -->
+                <div class="text-center mb-10">
+                    <button id="open-pengurus-modal-btn" class="bg-green-600 text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-green-700 transition-colors shadow-md">
+                        <i class="fas fa-list-ul mr-2"></i>Lihat Daftar Lengkap Pengurus
+                    </button>
+                </div>
+                
+                <div id="pengurus-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                    <!-- Konten Pengurus akan dimuat dari Firebase -->
+                    <div class="text-center col-span-1 md:col-span-2 lg:col-span-4">
+                        <i class="fas fa-spinner fa-spin fa-2x text-gray-400"></i>
+                        <p class="mt-2 text-gray-500">Memuat data pengurus...</p>
                     </div>
                 </div>
             </div>
@@ -227,14 +255,15 @@
                         <h3 class="text-2xl font-bold mb-3">Salurkan Infaq & Shadaqah Terbaik Anda</h3>
                         <p class="mb-6">Mari ikut berpartisipasi dalam program-program kebaikan Masjid Baitul Fattah. Setiap rupiah yang Anda donasikan akan menjadi amal jariyah yang pahalanya terus mengalir.</p>
                         <div class="mb-4">
-                            <p class="font-semibold">Rekening Donasi Operasional & Pembangunan:</p>
-                            <div class="bg-gray-100 p-4 rounded-lg mt-2 text-center">
-                                <p class="text-lg font-bold">Bank Syariah Indonesia (BSI)</p>
-                                <p class="text-2xl font-mono tracking-widest my-1">7123 4567 890</p>
-                                <p class="text-sm">a.n. DKM Baitul Fattah</p>
+                            <p class="font-semibold">Scan QRIS untuk Donasi Operasional & Pembangunan:</p>
+                            <!-- Mengganti info rekening bank dengan gambar QRIS -->
+                            <div class="bg-white p-4 rounded-lg mt-2 text-center">
+                                <img src="https://firebasestorage.googleapis.com/v0/b/dkm-baitul-fattah.firebasestorage.app/o/qris%20mbf.png?alt=media" alt="QRIS Donasi DKM Baitul Fattah" class="w-full max-w-xs mx-auto rounded-lg shadow-md" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                <!-- Fallback jika gambar gagal dimuat -->
+                                <p class="hidden text-red-500 text-sm mt-2">Gagal memuat gambar QRIS.</p>
                             </div>
                         </div>
-                        <a href="https://wa.me/6281234567890?text=Assalamualaikum,%20saya%20ingin%20konfirmasi%20donasi%20untuk%20Masjid%20Baitul%20Fattah." target="_blank" class="w-full bg-green-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center space-x-2">
+                        <a href="https://wa.me/6281387454259?text=Assalamualaikum,%20saya%20ingin%20konfirmasi%20donasi%20untuk%20Masjid%20Baitul%20Fattah." target="_blank" class="w-full bg-green-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center space-x-2">
                             <i class="fab fa-whatsapp"></i>
                             <span>Konfirmasi via WhatsApp</span>
                         </a>
@@ -258,6 +287,7 @@
                     <h4 class="font-semibold text-white text-lg mb-4">Tautan Cepat</h4>
                     <ul class="text-sm space-y-2">
                         <li><a href="#profil" class="hover:text-white">Tentang Kami</a></li>
+                        <li><a href="#pengurus" class="hover:text-white">Struktur Pengurus</a></li>
                         <li><a href="#jadwal" class="hover:text-white">Jadwal Kegiatan</a></li>
                         <li><a href="#berita" class="hover:text-white">Berita Umat</a></li>
                         <li><a href="#donasi" class="hover:text-white">Program Donasi</a></li>
@@ -267,7 +297,7 @@
                     <h4 class="font-semibold text-white text-lg mb-4">Temukan Kami</h4>
                     <div class="w-full h-40 bg-gray-600 rounded-lg">
                         <!-- Placeholder for Google Maps embed -->
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253801.47253281137!2d106.65152489216106!3d-6.309888553702273!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f1fdc181439b%3A0xa3a60648846be24!2sMasjid%20Jami&#39;%20Baitul%20Fattah!5e0!3m2!1sid!2sid!4v1761096806435!5m2!1sid!2sid" class="w-full h-full rounded-lg" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!m12!1m3!1d253801.47253281137!2d106.65152489216106!3d-6.309888553702273!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f1fdc181439b%3A0xa3a60648846be24!2sMasjid%20Jami&#39;%20Baitul%20Fattah!5e0!3m2!1sid!2sid!4v1761096806435!5m2!1sid!2sid" class="w-full h-full rounded-lg" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
             </div>
@@ -282,10 +312,67 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
+    <!-- Modal Pengurus -->
+    <!-- Mengganti 'modal-hidden' dengan 'hidden' (class bawaan Tailwind) -->
+    <div id="pengurus-modal-container" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[60] p-4 transition-opacity duration-300">
+        <!-- Overlay -->
+        <div id="pengurus-modal-overlay" class="absolute inset-0"></div>
+        
+        <!-- Modal Panel -->
+        <div id="pengurus-modal" class="bg-white rounded-lg shadow-xl w-full max-w-lg relative z-10 mx-auto">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center p-4 border-b border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-800">Daftar Lengkap Pengurus DKM</h3>
+                <button id="close-pengurus-modal" class="text-gray-400 hover:text-gray-600 text-3xl leading-none font-bold">&times;</button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div id="pengurus-modal-content" class="p-6 max-h-[70vh] overflow-y-auto">
+                <!-- Konten teks akan diisi oleh JavaScript -->
+                <div class="text-center">
+                    <i class="fas fa-spinner fa-spin fa-lg text-gray-400"></i>
+                    <p class="mt-2 text-gray-500">Memuat data...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Berita (BARU) -->
+    <div id="berita-modal-container" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[60] p-4 transition-opacity duration-300">
+        <!-- Overlay -->
+        <div id="berita-modal-overlay" class="absolute inset-0"></div>
+        
+        <!-- Modal Panel -->
+        <div id="berita-modal-panel" class="bg-white rounded-lg shadow-xl w-full max-w-2xl relative z-10 mx-auto">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center p-4 border-b border-gray-200">
+                <h3 id="berita-modal-title" class="text-xl font-semibold text-gray-800">Judul Berita</h3>
+                <button id="close-berita-modal" class="text-gray-400 hover:text-gray-600 text-3xl leading-none font-bold">&times;</button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div id="berita-modal-content-container" class="p-6 max-h-[70vh] overflow-y-auto">
+                <!-- Loader -->
+                <div id="berita-modal-loader" class="text-center">
+                    <i class="fas fa-spinner fa-spin fa-lg text-gray-400"></i>
+                    <p class="mt-2 text-gray-500">Memuat berita...</p>
+                </div>
+                <!-- Konten (hidden by default) -->
+                <div id="berita-modal-content" class="hidden">
+                    <img id="berita-modal-img" src="" alt="Gambar Berita" class="w-full h-64 object-cover rounded-lg mb-4">
+                    <p id="berita-modal-date" class="text-sm text-gray-500 mb-2"></p>
+                    <!-- 'prose' class dari plugin typography untuk auto-format teks -->
+                    <div id="berita-modal-text" class="prose max-w-none text-gray-700"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script type="module">
         // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, Timestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, Timestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Konfigurasi Firebase Anda
         const firebaseConfig = {
@@ -301,10 +388,14 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        let cachedBeritaData = null; // Tambahkan cache untuk berita
+
         // --- Fungsi untuk mengambil dan menampilkan berita dari Firestore ---
         async function renderBerita() {
             const beritaContainer = document.getElementById('berita-container');
             if (!beritaContainer) return;
+
+            cachedBeritaData = []; // Inisialisasi cache
 
             try {
                 const querySnapshot = await getDocs(collection(db, "berita"));
@@ -312,11 +403,16 @@
 
                 if (querySnapshot.empty) {
                     beritaContainer.innerHTML = `<p class="text-center col-span-1 md:col-span-2 lg:col-span-3">Belum ada berita yang dipublikasikan.</p>`;
+                    cachedBeritaData = []; // Set cache ke array kosong
                     return;
                 }
 
                 querySnapshot.forEach((doc) => {
                     const berita = doc.data();
+                    
+                    // Simpan data lengkap ke cache
+                    cachedBeritaData.push({ id: doc.id, ...berita });
+
                     // Konversi timestamp Firestore ke tanggal yang bisa dibaca
                     const beritaDate = berita.tanggal instanceof Timestamp 
                         ? berita.tanggal.toDate().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -329,7 +425,8 @@
                                 <p class="text-sm text-gray-500 mb-2">${beritaDate}</p>
                                 <h3 class="font-semibold text-lg mb-2 text-gray-800">${berita.judul}</h3>
                                 <p class="text-sm mb-4">${berita.kutipan || ''}</p>
-                                <a href="#" class="text-green-600 font-semibold hover:underline">Baca Selengkapnya &rarr;</a>
+                                <!-- Ganti <a> dengan <button> dan tambahkan data-id -->
+                                <button data-id="${doc.id}" class="open-berita-modal-btn text-green-600 font-semibold hover:underline focus:outline-none">Baca Selengkapnya &rarr;</button>
                             </div>
                         </div>
                     `;
@@ -338,7 +435,57 @@
             } catch (error) {
                 console.error("Error fetching news from Firestore: ", error);
                 beritaContainer.innerHTML = `<p class="text-center text-red-500 col-span-1 md:col-span-2 lg:col-span-3">Gagal memuat berita. Silakan periksa koneksi internet Anda.</p>`;
+                cachedBeritaData = null; // Set cache ke null jika error
             }
+        }
+
+        // --- Fungsi BARU untuk merender konten modal berita ---
+        function renderBeritaModal(id) {
+            const modalTitle = document.getElementById('berita-modal-title');
+            const modalImg = document.getElementById('berita-modal-img');
+            const modalDate = document.getElementById('berita-modal-date');
+            const modalText = document.getElementById('berita-modal-text');
+            const modalLoader = document.getElementById('berita-modal-loader');
+            const modalContent = document.getElementById('berita-modal-content');
+            
+            // Tampilkan loader, sembunyikan konten
+            modalLoader.classList.remove('hidden');
+            modalContent.classList.add('hidden');
+
+            if (!cachedBeritaData) {
+                modalLoader.innerHTML = '<p class="text-center text-red-500">Data berita belum dimuat. Coba lagi nanti.</p>';
+                return;
+            }
+
+            const newsItem = cachedBeritaData.find(item => item.id === id);
+
+            if (!newsItem) {
+                modalLoader.innerHTML = '<p class="text-center text-red-500">Berita tidak ditemukan.</p>';
+                return;
+            }
+
+            // Isi konten modal
+            modalTitle.textContent = newsItem.judul;
+            
+            if (newsItem.gambarUrl) {
+                modalImg.src = newsItem.gambarUrl;
+                modalImg.alt = `Gambar ${newsItem.judul}`;
+                modalImg.classList.remove('hidden');
+            } else {
+                modalImg.classList.add('hidden'); // Sembunyikan jika tidak ada gambar
+            }
+            
+            modalDate.textContent = newsItem.tanggal instanceof Timestamp 
+                ? newsItem.tanggal.toDate().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+                : 'Tanggal tidak valid';
+
+            // Gunakan 'isi_lengkap' jika ada, jika tidak, gunakan 'kutipan'
+            // Asumsi 'isi_lengkap' atau 'kutipan' bisa berisi HTML, jadi pakai .innerHTML
+            modalText.innerHTML = newsItem.isi_lengkap || newsItem.kutipan || 'Konten tidak tersedia.';
+
+            // Sembunyikan loader, tampilkan konten
+            modalLoader.classList.add('hidden');
+            modalContent.classList.remove('hidden');
         }
 
 
@@ -418,6 +565,79 @@
             }
         }
 
+        // --- Fungsi untuk mengambil dan menampilkan Pengurus dari Firestore ---
+        async function renderPengurus() {
+            const pengurusContainer = document.getElementById('pengurus-container');
+            const modalContent = document.getElementById('pengurus-modal-content');
+            const allPengurusList = []; // Array untuk menyimpan data teks
+
+            if (!pengurusContainer) return;
+
+            try {
+                // Mengambil data dari collection 'pengurus' dan diurutkan berdasarkan 'urutan'
+                const q = query(collection(db, "pengurus"), orderBy("urutan", "asc"));
+                const querySnapshot = await getDocs(q);
+                pengurusContainer.innerHTML = ''; // Hapus loader
+
+                if (querySnapshot.empty) {
+                    const noDataMsg = `<p class="text-center col-span-1 md:col-span-2 lg:col-span-4">Data pengurus belum tersedia.</p>`;
+                    pengurusContainer.innerHTML = noDataMsg;
+                    if(modalContent) modalContent.innerHTML = `<p class="text-center">Data pengurus tidak ditemukan.</p>`;
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const pengurus = doc.data();
+                    
+                    // 1. Simpan data untuk modal teks
+                    allPengurusList.push({ nama: pengurus.nama, jabatan: pengurus.jabatan });
+
+                    // 2. Buat Card untuk tampilan utama
+                    // Menentukan style untuk jabatan (Ketua akan berwarna hijau)
+                    const jabatanClass = pengurus.jabatan.toLowerCase().includes('ketua') 
+                                       ? 'text-green-600 font-semibold' 
+                                       : 'text-gray-600 font-medium';
+                    
+                    // Fallback jika fotoUrl tidak ada
+                    const fotoUrl = pengurus.fotoUrl || 'https://placehold.co/150x150/e2e8f0/64748b?text=Foto';
+
+                    const pengurusCardHTML = `
+                        <div class="bg-white rounded-lg shadow-lg text-center p-6 transition-transform duration-300 hover:scale-105">
+                            <img src="${fotoUrl}" alt="Foto ${pengurus.nama}" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gray-200 object-cover">
+                            <h4 class="font-bold text-lg text-gray-800">${pengurus.nama}</h4>
+                            <p class="${jabatanClass}">${pengurus.jabatan}</p>
+                        </div>
+                    `;
+                    pengurusContainer.innerHTML += pengurusCardHTML;
+                });
+
+                // 3. Isi Modal Pengurus dengan data teks
+                if (modalContent) {
+                    if (allPengurusList.length > 0) {
+                        let modalContentHTML = '';
+                        allPengurusList.forEach(p => {
+                            modalContentHTML += `
+                                <div class="mb-3 pb-3 border-b border-gray-100 last:border-b-0">
+                                    <p class="font-semibold text-green-700 text-base">${p.jabatan}</p>
+                                    <p class="text-gray-700 text-sm">${p.nama}</p>
+                                </div>
+                            `;
+                        });
+                        modalContent.innerHTML = modalContentHTML;
+                    } else {
+                        // Ini seharusnya tidak terjadi jika querySnapshot tidak empty, tapi sebagai fallback
+                        modalContent.innerHTML = '<p class="text-center">Data pengurus tidak ditemukan.</p>';
+                    }
+                }
+
+            } catch (error) {
+                console.error("Error fetching pengurus from Firestore: ", error);
+                const errorMsg = `<p class="text-center text-red-500 col-span-1 md:col-span-2 lg:col-span-4">Gagal memuat data pengurus.</p>`;
+                pengurusContainer.innerHTML = errorMsg;
+                if(modalContent) modalContent.innerHTML = `<p class="text-center text-red-500">Gagal memuat data pengurus.</p>`;
+            }
+        }
+
 
         document.addEventListener('DOMContentLoaded', function() {
             // Mobile Menu Toggle
@@ -486,6 +706,61 @@
                 observer.observe(section);
             });
 
+            // --- Logika Modal Pengurus ---
+            const openModalBtn = document.getElementById('open-pengurus-modal-btn');
+            const closeModalBtn = document.getElementById('close-pengurus-modal');
+            const modalContainer = document.getElementById('pengurus-modal-container');
+            const modalOverlay = document.getElementById('pengurus-modal-overlay');
+
+            if (openModalBtn && closeModalBtn && modalContainer && modalOverlay) {
+                openModalBtn.addEventListener('click', () => {
+                    modalContainer.classList.remove('hidden'); // Diubah dari 'modal-hidden'
+                });
+
+                const closeModal = () => {
+                    modalContainer.classList.add('hidden'); // Diubah dari 'modal-hidden'
+                };
+
+                closeModalBtn.addEventListener('click', closeModal);
+                modalOverlay.addEventListener('click', closeModal);
+            }
+            // --- Akhir Logika Modal Pengurus ---
+
+            // --- Logika Modal BERITA (BARU) ---
+            const beritaContainer = document.getElementById('berita-container');
+            const beritaModalContainer = document.getElementById('berita-modal-container');
+            const closeBeritaModalBtn = document.getElementById('close-berita-modal');
+            const beritaModalOverlay = document.getElementById('berita-modal-overlay');
+
+            if (beritaContainer && beritaModalContainer && closeBeritaModalBtn && beritaModalOverlay) {
+                
+                // 1. Buka modal (Event Delegation)
+                // Kita tambahkan listener ke 'beritaContainer' untuk menangkap klik dari tombol dinamis
+                beritaContainer.addEventListener('click', (e) => {
+                    const openBtn = e.target.closest('.open-berita-modal-btn');
+                    if (openBtn) {
+                        const newsId = openBtn.dataset.id;
+                        if (newsId) {
+                            renderBeritaModal(newsId); // Panggil fungsi render
+                            beritaModalContainer.classList.remove('hidden'); // Tampilkan modal
+                        }
+                    }
+                });
+
+                // 2. Tutup modal
+                const closeBeritaModal = () => {
+                    beritaModalContainer.classList.add('hidden');
+                    // Reset konten modal ke loader saat ditutup (untuk persiapan klik berikutnya)
+                    document.getElementById('berita-modal-loader').classList.remove('hidden');
+                    document.getElementById('berita-modal-content').classList.add('hidden');
+                    document.getElementById('berita-modal-title').textContent = 'Judul Berita';
+                };
+
+                closeBeritaModalBtn.addEventListener('click', closeBeritaModal);
+                beritaModalOverlay.addEventListener('click', closeBeritaModal);
+            }
+            // --- Akhir Logika Modal Berita ---
+
             // Fetch Jadwal Shalat API
             function fetchPrayerTimes() {
                 // Koordinat untuk Depok, Jawa Barat
@@ -511,23 +786,28 @@
                         return response.json();
                     })
                     .then(data => {
-                        const todayData = data.data[day - 1];
-                        const timings = todayData.timings;
-                        const dateReadable = todayData.date.readable;
-                        const dateHijri = `${todayData.date.hijri.day} ${todayData.date.hijri.month.en} ${todayData.date.hijri.year}`;
-                        
-                        prayerDateEl.textContent = `${dateReadable} / ${dateHijri}`;
-                        
-                        document.getElementById('subuh-time').textContent = timings.Fajr.substring(0, 5);
-                        document.getElementById('syuruq-time').textContent = timings.Sunrise.substring(0, 5);
-                        document.getElementById('dzuhur-time').textContent = timings.Dhuhr.substring(0, 5);
-                        document.getElementById('ashar-time').textContent = timings.Asr.substring(0, 5);
-                        document.getElementById('maghrib-time').textContent = timings.Maghrib.substring(0, 5);
-                        document.getElementById('isya-time').textContent = timings.Isha.substring(0, 5);
+                        // Periksa apakah data.data ada dan merupakan array
+                        if (data && data.data && Array.isArray(data.data) && data.data.length > day -1) {
+                            const todayData = data.data[day - 1];
+                            const timings = todayData.timings;
+                            const dateReadable = todayData.date.readable;
+                            const dateHijri = `${todayData.date.hijri.day} ${todayData.date.hijri.month.en} ${todayData.date.hijri.year}`;
+                            
+                            prayerDateEl.textContent = `${dateReadable} / ${dateHijri}`;
+                            
+                            document.getElementById('subuh-time').textContent = timings.Fajr.substring(0, 5);
+                            document.getElementById('syuruq-time').textContent = timings.Sunrise.substring(0, 5);
+                            document.getElementById('dzuhur-time').textContent = timings.Dhuhr.substring(0, 5);
+                            document.getElementById('ashar-time').textContent = timings.Asr.substring(0, 5);
+                            document.getElementById('maghrib-time').textContent = timings.Maghrib.substring(0, 5);
+                            document.getElementById('isya-time').textContent = timings.Isha.substring(0, 5);
 
-                        loader.classList.add('hidden');
-                        container.classList.remove('hidden');
-                        container.classList.add('grid');
+                            loader.classList.add('hidden');
+                            container.classList.remove('hidden');
+                            container.classList.add('grid');
+                        } else {
+                             throw new Error('Invalid data structure from API');
+                        }
                     })
                     .catch(error => {
                         console.error('Error fetching prayer times:', error);
@@ -541,11 +821,11 @@
             renderBerita();
             renderJadwalKajian();
             renderJadwalJumat();
+            renderPengurus();
         });
     </script>
 </body>
 </html>
-
 
 
 
