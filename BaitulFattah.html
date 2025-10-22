@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Resmi DKM Baitul Fattah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .active-nav {
+            color: #16a34a; /* green-600 */
+            font-weight: 600;
+        }
+        .hero-bg {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://firebasestorage.googleapis.com/v0/b/dkm-baitul-fattah.firebasestorage.app/o/WhatsApp%20Image%202025-09-09%20at%2014.11.11.jpeg?alt=media&token=8c4a8f1c-5b0e-4f4e-857b-da54d94aceef');
+            background-size: cover;
+            background-position: center;
+        }
+        .section-title {
+            @apply text-3xl font-bold text-gray-800 mb-2 text-center;
+        }
+        .section-subtitle {
+            @apply text-center text-gray-500 mb-8 max-w-2xl mx-auto;
+        }
+        .fade-in {
+            animation: fadeInAnimation 1s ease-in-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeInAnimation {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-700">
+
+    <!-- Header / Navigation -->
+    <header id="header" class="bg-white/80 backdrop-blur-md shadow-md fixed w-full top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="#beranda" class="flex items-center space-x-2">
+                        <img class="h-10 w-auto" src="https://firebasestorage.googleapis.com/v0/b/dkm-baitul-fattah.firebasestorage.app/o/Logo_Masjid.jpg?alt=media&token=9f7143f5-12f9-40b9-be93-2e539eec1a17" alt="Logo DKM Baitul Fattah">
+                        <span class="hidden sm:block text-xl font-bold text-green-700">DKM Baitul Fattah</span>
+                    </a>
+                </div>
+                <div class="hidden md:block">
+                    <nav class="ml-10 flex items-baseline space-x-4">
+                        <a href="#beranda" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-green-600">Beranda</a>
+                        <a href="#profil" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-green-600">Profil</a>
+                        <a href="#jadwal" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-green-600">Jadwal</a>
+                        <a href="#berita" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-green-600">Berita</a>
+                        <a href="#keuangan" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-green-600">Keuangan</a>
+                        <a href="#kontak" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-green-600">Kontak</a>
+                    </nav>
+                </div>
+                <div class="hidden md:block">
+                    <a href="#donasi" class="bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-green-700 transition-colors">Donasi Sekarang</a>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button id="mobile-menu-button" type="button" class="bg-white p-2 inline-flex items-center justify-center rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Buka menu utama</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#beranda" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-green-600 hover:bg-gray-50">Beranda</a>
+                <a href="#profil" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-green-600 hover:bg-gray-50">Profil</a>
+                <a href="#jadwal" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-green-600 hover:bg-gray-50">Jadwal</a>
+                <a href="#berita" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-green-600 hover:bg-gray-50">Berita</a>
+                <a href="#keuangan" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-green-600 hover:bg-gray-50">Keuangan</a>
+                 <a href="#kontak" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-green-600 hover:bg-gray-50">Kontak</a>
+                <a href="#donasi" class="block w-full text-left bg-green-600 text-white mt-2 px-3 py-2 rounded-md text-base font-medium hover:bg-green-700">Donasi Sekarang</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Section Beranda / Hero -->
+        <section id="beranda" class="hero-bg h-screen flex items-center justify-center text-white">
+            <div class="text-center px-4">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg fade-in">Selamat Datang di Masjid Baitul Fattah</h1>
+                <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto drop-shadow-md fade-in" style="animation-delay: 0.2s;">Pusat Ibadah, Pendidikan, dan Pemberdayaan Umat.</p>
+                
+                <!-- Jadwal Shalat Widget -->
+                <div class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl max-w-4xl mx-auto fade-in" style="animation-delay: 0.4s;">
+                    <h3 class="text-xl font-semibold mb-4" id="prayer-date">Memuat jadwal shalat...</h3>
+                    <div id="prayer-times-loader" class="text-center">
+                        <i class="fas fa-spinner fa-spin fa-2x"></i>
+                    </div>
+                    <div id="prayer-times-container" class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 text-center">
+                        <!-- Waktu Shalat akan diisi oleh JavaScript -->
+                        <div class="prayer-item"><p class="font-semibold text-lg">Subuh</p><p id="subuh-time">-:-</p></div>
+                        <div class="prayer-item"><p class="font-semibold text-lg">Syuruq</p><p id="syuruq-time">-:-</p></div>
+                        <div class="prayer-item"><p class="font-semibold text-lg">Dzuhur</p><p id="dzuhur-time">-:-</p></div>
+                        <div class="prayer-item"><p class="font-semibold text-lg">Ashar</p><p id="ashar-time">-:-</p></div>
+                        <div class="prayer-item"><p class="font-semibold text-lg">Maghrib</p><p id="maghrib-time">-:-</p></div>
+                        <div class="prayer-item"><p class="font-semibold text-lg">Isya</p><p id="isya-time">-:-</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Profil -->
+        <section id="profil" class="py-20 scroll-mt-16">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title">Profil Masjid Baitul Fattah</h2>
+                <p class="section-subtitle">Mengenal lebih dekat rumah ibadah kita, dari sejarah hingga visi dan misi untuk umat.</p>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="rounded-lg overflow-hidden shadow-lg">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dkm-baitul-fattah.firebasestorage.app/o/WhatsApp%20Image%202025-09-09%20at%2014.11.11.jpeg?alt=media" alt="Foto Masjid Baitul Fattah" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">Sejarah & Visi Misi</h3>
+                        <p class="mb-4">Masjid Baitul Fattah didirikan pada tahun 1995 atas prakarsa tokoh masyarakat dan swadaya jamaah. Sejak awal, masjid ini dirancang tidak hanya sebagai tempat shalat, tetapi juga sebagai pusat kegiatan keislaman yang ramah bagi semua kalangan usia.</p>
+                        <p class="font-semibold text-gray-600 mb-2">Visi Kami:</p>
+                        <p class="mb-4 pl-4 border-l-4 border-green-500">"Menjadi pusat peradaban Islam yang memakmurkan dan dimakmurkan oleh jamaah, serta menebar rahmat bagi semesta alam."</p>
+                         <p class="font-semibold text-gray-600 mb-2">Misi Kami:</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Menyelenggarakan ibadah yang khusyuk dan nyaman.</li>
+                            <li>Mengembangkan program pendidikan Al-Qur'an dan keislaman.</li>
+                            <li>Menjadi motor penggerak kegiatan sosial dan pemberdayaan ekonomi umat.</li>
+                            <li>Membangun ukhuwah islamiyah di antara jamaah dan masyarakat.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Jadwal -->
+        <section id="jadwal" class="py-20 bg-green-50/50 scroll-mt-16">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title">Agenda & Jadwal Kegiatan</h2>
+                <p class="section-subtitle">Ikuti berbagai kegiatan ilmu dan ibadah untuk meningkatkan keimanan dan wawasan kita bersama.</p>
+                
+                <div class="max-w-4xl mx-auto">
+                     <div class="mb-6 border-b border-gray-200">
+                        <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                            <button class="tab-btn active text-green-600 border-green-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="kajian-tab">
+                                Pengajian Rutin
+                            </button>
+                            <button class="tab-btn text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="jumat-tab">
+                                Khotib Jum'at
+                            </button>
+                        </nav>
+                    </div>
+
+                    <div id="kajian-tab" class="tab-content">
+                        <div id="kajian-container" class="space-y-4">
+                           <!-- Konten Pengajian Rutin akan dimuat dari Firebase -->
+                           <div class="text-center py-4">
+                                <i class="fas fa-spinner fa-spin fa-2x text-gray-400"></i>
+                                <p class="mt-2 text-gray-500">Memuat jadwal pengajian...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="jumat-tab" class="tab-content hidden">
+                         <div id="jumat-container" class="space-y-3">
+                           <!-- Konten Khotib Jum'at akan dimuat dari Firebase -->
+                           <div class="text-center py-4">
+                                <i class="fas fa-spinner fa-spin fa-2x text-gray-400"></i>
+                                <p class="mt-2 text-gray-500">Memuat jadwal khotib...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section Berita -->
+        <section id="berita" class="py-20 scroll-mt-16">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title">Berita & Artikel Terkini</h2>
+                <p class="section-subtitle">Informasi seputar kegiatan masjid dan artikel-artikel keislaman yang bermanfaat.</p>
+                <div id="berita-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Konten berita akan dimuat dari Firebase di sini -->
+                    <div class="text-center col-span-1 md:col-span-2 lg:col-span-3">
+                        <i class="fas fa-spinner fa-spin fa-2x text-gray-400"></i>
+                        <p class="mt-2 text-gray-500">Memuat berita...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Keuangan & Donasi -->
+        <section id="keuangan" class="py-20 bg-gray-900 text-white scroll-mt-16">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <!-- Laporan Keuangan -->
+                    <div>
+                        <h2 class="text-3xl font-bold mb-2">Transparansi Dana Umat</h2>
+                        <p class="text-gray-300 mb-6">Sebagai bentuk amanah, kami menyajikan laporan keuangan masjid secara berkala. Dana yang Bapak/Ibu titipkan kami kelola untuk kemakmuran masjid dan umat.</p>
+                        <div class="bg-gray-800 p-6 rounded-xl">
+                            <h4 class="font-semibold text-lg mb-4">Laporan Kas Masjid - Oktober 2025</h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <p class="text-gray-300">Pemasukan Bulan Ini</p>
+                                    <p class="font-semibold text-green-400 text-xl">Rp 15.250.000</p>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <p class="text-gray-300">Pengeluaran Bulan Ini</p>
+                                    <p class="font-semibold text-red-400 text-xl">Rp 8.700.000</p>
+                                </div>
+                                <hr class="border-gray-600 my-3">
+                                <div class="flex justify-between items-center">
+                                    <p class="text-gray-300 font-bold">Saldo Akhir</p>
+                                    <p class="font-bold text-2xl">Rp 65.550.000</p>
+                                </div>
+                            </div>
+                            <a href="#" class="text-green-400 mt-4 inline-block hover:underline">Lihat Laporan Detail &rarr;</a>
+                        </div>
+                    </div>
+                    <!-- Donasi -->
+                    <div id="donasi" class="bg-white text-gray-800 p-8 rounded-2xl shadow-2xl">
+                        <h3 class="text-2xl font-bold mb-3">Salurkan Infaq & Shadaqah Terbaik Anda</h3>
+                        <p class="mb-6">Mari ikut berpartisipasi dalam program-program kebaikan Masjid Baitul Fattah. Setiap rupiah yang Anda donasikan akan menjadi amal jariyah yang pahalanya terus mengalir.</p>
+                        <div class="mb-4">
+                            <p class="font-semibold">Rekening Donasi Operasional & Pembangunan:</p>
+                            <div class="bg-gray-100 p-4 rounded-lg mt-2 text-center">
+                                <p class="text-lg font-bold">Bank Syariah Indonesia (BSI)</p>
+                                <p class="text-2xl font-mono tracking-widest my-1">7123 4567 890</p>
+                                <p class="text-sm">a.n. DKM Baitul Fattah</p>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/6281234567890?text=Assalamualaikum,%20saya%20ingin%20konfirmasi%20donasi%20untuk%20Masjid%20Baitul%20Fattah." target="_blank" class="w-full bg-green-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center space-x-2">
+                            <i class="fab fa-whatsapp"></i>
+                            <span>Konfirmasi via WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="kontak" class="bg-gray-800 text-gray-300 pt-16 pb-8 scroll-mt-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h4 class="font-semibold text-white text-lg mb-4">DKM Baitul Fattah</h4>
+                    <p class="text-sm">Jl. Lapangan Tembak Marinir No.2 RT 07 RW 01 kelurahan Cilandak Timur, kec Pasar Minggu, Jakarta Selatan 12560.</p>
+                    <p class="text-sm mt-2">Email: info@baitulfattah.org</p>
+                    <p class="text-sm">Telp: +62 851-7689-1354</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white text-lg mb-4">Tautan Cepat</h4>
+                    <ul class="text-sm space-y-2">
+                        <li><a href="#profil" class="hover:text-white">Tentang Kami</a></li>
+                        <li><a href="#jadwal" class="hover:text-white">Jadwal Kegiatan</a></li>
+                        <li><a href="#berita" class="hover:text-white">Berita Umat</a></li>
+                        <li><a href="#donasi" class="hover:text-white">Program Donasi</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white text-lg mb-4">Temukan Kami</h4>
+                    <div class="w-full h-40 bg-gray-600 rounded-lg">
+                        <!-- Placeholder for Google Maps embed -->
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253801.47253281137!2d106.65152489216106!3d-6.309888553702273!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f1fdc181439b%3A0xa3a60648846be24!2sMasjid%20Jami&#39;%20Baitul%20Fattah!5e0!3m2!1sid!2sid!4v1761096806435!5m2!1sid!2sid" class="w-full h-full rounded-lg" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-6 text-center text-sm">
+                <p>&copy; 2025 DKM Baitul Fattah. Seluruh Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Tombol Back to Top -->
+    <button id="back-to-top" class="hidden fixed bottom-5 right-5 bg-green-600 text-white w-12 h-12 rounded-full shadow-lg hover:bg-green-700 transition-colors focus:outline-none">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, Timestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Konfigurasi Firebase Anda
+        const firebaseConfig = {
+            apiKey: "AIzaSyAjxdJttqFC6ZC3kQylAdGb_0Cgw-iPlOU",
+            authDomain: "dkm-baitul-fattah.firebaseapp.com",
+            projectId: "dkm-baitul-fattah",
+            storageBucket: "dkm-baitul-fattah.appspot.com",
+            messagingSenderId: "404244659817",
+            appId: "1:404244659817:web:5ad17300c009d5ae09acf8"
+        };
+
+        // Inisialisasi Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- Fungsi untuk mengambil dan menampilkan berita dari Firestore ---
+        async function renderBerita() {
+            const beritaContainer = document.getElementById('berita-container');
+            if (!beritaContainer) return;
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "berita"));
+                beritaContainer.innerHTML = ''; // Hapus loader
+
+                if (querySnapshot.empty) {
+                    beritaContainer.innerHTML = `<p class="text-center col-span-1 md:col-span-2 lg:col-span-3">Belum ada berita yang dipublikasikan.</p>`;
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const berita = doc.data();
+                    // Konversi timestamp Firestore ke tanggal yang bisa dibaca
+                    const beritaDate = berita.tanggal instanceof Timestamp 
+                        ? berita.tanggal.toDate().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                        : 'Tanggal tidak valid';
+
+                    const beritaCardHTML = `
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden group">
+                            <img src="${berita.gambarUrl || 'https://placehold.co/600x400/34d399/14532d?text=Gambar+Berita'}" alt="${berita.judul}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="p-6">
+                                <p class="text-sm text-gray-500 mb-2">${beritaDate}</p>
+                                <h3 class="font-semibold text-lg mb-2 text-gray-800">${berita.judul}</h3>
+                                <p class="text-sm mb-4">${berita.kutipan || ''}</p>
+                                <a href="#" class="text-green-600 font-semibold hover:underline">Baca Selengkapnya &rarr;</a>
+                            </div>
+                        </div>
+                    `;
+                    beritaContainer.innerHTML += beritaCardHTML;
+                });
+            } catch (error) {
+                console.error("Error fetching news from Firestore: ", error);
+                beritaContainer.innerHTML = `<p class="text-center text-red-500 col-span-1 md:col-span-2 lg:col-span-3">Gagal memuat berita. Silakan periksa koneksi internet Anda.</p>`;
+            }
+        }
+
+
+        // --- Fungsi untuk mengambil dan menampilkan Jadwal Kajian dari Firestore ---
+        async function renderJadwalKajian() {
+            const kajianContainer = document.getElementById('kajian-container');
+            if (!kajianContainer) return;
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "jadwal_kajian"));
+                kajianContainer.innerHTML = ''; // Hapus loader
+
+                if (querySnapshot.empty) {
+                    kajianContainer.innerHTML = `<p class="text-center py-4">Jadwal pengajian rutin belum tersedia.</p>`;
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const kajian = doc.data();
+                    const kajianCardHTML = `
+                        <div class="bg-white p-5 rounded-lg shadow-sm flex items-center space-x-4">
+                            <div class="bg-green-100 text-green-700 w-16 h-16 rounded-lg flex flex-col items-center justify-center text-center">
+                                <span class="font-bold text-lg">${kajian.hari.toUpperCase()}</span>
+                                <span class="text-xs">${kajian.waktu}</span>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">${kajian.judul}</h3>
+                                <p class="text-sm text-gray-500">Bersama: ${kajian.pemateri}</p>
+                            </div>
+                        </div>
+                    `;
+                    kajianContainer.innerHTML += kajianCardHTML;
+                });
+            } catch (error) {
+                console.error("Error fetching schedule from Firestore: ", error);
+                kajianContainer.innerHTML = `<p class="text-center text-red-500 py-4">Gagal memuat jadwal pengajian.</p>`;
+            }
+        }
+
+        // --- Fungsi untuk mengambil dan menampilkan Jadwal Khotib Jum'at dari Firestore ---
+        async function renderJadwalJumat() {
+            const jumatContainer = document.getElementById('jumat-container');
+            if (!jumatContainer) return;
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "jadwal_jumat"));
+                jumatContainer.innerHTML = ''; // Hapus loader
+
+                if (querySnapshot.empty) {
+                    jumatContainer.innerHTML = `<p class="text-center py-4">Jadwal khotib Jum'at belum tersedia.</p>`;
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const jumat = doc.data();
+                    const jumatDate = jumat.tanggal instanceof Timestamp
+                        ? jumat.tanggal.toDate().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+                        : 'Tanggal tidak valid';
+
+                    const jumatCardHTML = `
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold">${jumat.khotib}</p>
+                                <p class="text-sm text-gray-500">Tema: "${jumat.tema}"</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold text-green-600">${jumatDate}</p>
+                                <p class="text-xs text-gray-400">${jumat.keterangan || ''}</p>
+                            </div>
+                        </div>
+                    `;
+                    jumatContainer.innerHTML += jumatCardHTML;
+                });
+            } catch (error) {
+                console.error("Error fetching Friday schedule from Firestore: ", error);
+                jumatContainer.innerHTML = `<p class="text-center text-red-500 py-4">Gagal memuat jadwal khotib.</p>`;
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Jadwal Kegiatan Tabs
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.dataset.tab;
+
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active', 'text-green-600', 'border-green-600');
+                        btn.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                    });
+
+                    button.classList.add('active', 'text-green-600', 'border-green-600');
+                    button.classList.remove('text-gray-500');
+
+                    tabContents.forEach(content => {
+                        if (content.id === tabId) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // Back to Top Button
+            const backToTopButton = document.getElementById('back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.remove('hidden');
+                } else {
+                    backToTopButton.classList.add('hidden');
+                }
+            });
+            backToTopButton.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // Active Navigation Link on Scroll
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-nav');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-nav');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Fetch Jadwal Shalat API
+            function fetchPrayerTimes() {
+                // Koordinat untuk Depok, Jawa Barat
+                const latitude = -6.397352;
+                const longitude = 106.822813;
+                const method = 4; // Kemenag
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = today.getMonth() + 1;
+                const day = today.getDate();
+
+                const apiUrl = `https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${latitude}&longitude=${longitude}&method=${method}`;
+                
+                const prayerDateEl = document.getElementById('prayer-date');
+                const loader = document.getElementById('prayer-times-loader');
+                const container = document.getElementById('prayer-times-container');
+                
+                fetch(apiUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const todayData = data.data[day - 1];
+                        const timings = todayData.timings;
+                        const dateReadable = todayData.date.readable;
+                        const dateHijri = `${todayData.date.hijri.day} ${todayData.date.hijri.month.en} ${todayData.date.hijri.year}`;
+                        
+                        prayerDateEl.textContent = `${dateReadable} / ${dateHijri}`;
+                        
+                        document.getElementById('subuh-time').textContent = timings.Fajr.substring(0, 5);
+                        document.getElementById('syuruq-time').textContent = timings.Sunrise.substring(0, 5);
+                        document.getElementById('dzuhur-time').textContent = timings.Dhuhr.substring(0, 5);
+                        document.getElementById('ashar-time').textContent = timings.Asr.substring(0, 5);
+                        document.getElementById('maghrib-time').textContent = timings.Maghrib.substring(0, 5);
+                        document.getElementById('isya-time').textContent = timings.Isha.substring(0, 5);
+
+                        loader.classList.add('hidden');
+                        container.classList.remove('hidden');
+                        container.classList.add('grid');
+                    })
+                    .catch(error => {
+                        console.error('Error fetching prayer times:', error);
+                        prayerDateEl.textContent = 'Gagal memuat jadwal shalat. Coba lagi nanti.';
+                        loader.classList.add('hidden');
+                    });
+            }
+
+            // Panggil fungsi untuk memuat data dari API dan Firebase
+            fetchPrayerTimes();
+            renderBerita();
+            renderJadwalKajian();
+            renderJadwalJumat();
+        });
+    </script>
+</body>
+</html>
+
+
+
+
