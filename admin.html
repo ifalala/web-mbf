@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - DKM Baitul Fattah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .tab-btn { @apply px-4 py-2 text-sm font-medium text-gray-600 rounded-t-lg hover:text-green-700 hover:bg-green-50; }
+        .tab-btn.active { @apply text-green-700 border-b-2 border-green-600 bg-white; }
+        .tab-content { @apply hidden; }
+        .tab-content.active { @apply block; }
+        input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="time"], input[type="number"], textarea, select {
+            @apply w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent;
+        }
+        .btn { @apply px-4 py-2 rounded-lg font-semibold transition-colors; }
+        .btn-primary { @apply bg-green-600 text-white hover:bg-green-700; }
+        .btn-danger { @apply bg-red-600 text-white hover:bg-red-700; }
+        .btn-secondary { @apply bg-gray-200 text-gray-800 hover:bg-gray-300; }
+        table { @apply w-full min-w-full divide-y divide-gray-200; }
+        th { @apply px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider; }
+        td { @apply px-6 py-4 whitespace-nowrap text-sm text-gray-700; }
+        tbody tr:nth-child(even) { @apply bg-white; }
+        tbody tr:nth-child(odd) { @apply bg-gray-50; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Container Notifikasi (Toast) -->
+    <div id="toast-container" class="fixed top-5 right-5 z-[100] space-y-2"></div>
+
+    <!-- 1. Halaman Login (Tampil default) -->
+    <div id="login-container" class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm">
+            <img src="https://firebasestorage.googleapis.com/v0/b/dkm-baitul-fattah.firebasestorage.app/o/Logo_Masjid.jpg?alt=media&token=9f7143f5-12f9-40b9-be93-2e539eec1a17" alt="Logo" class="w-20 h-20 mx-auto mb-4">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
+            <form id="login-form">
+                <div class="space-y-4">
+                    <div>
+                        <label for="login-email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div>
+                        <label for="login-password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" id="login-button" class="btn btn-primary w-full">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login
+                    </button>
+                    <p id="login-error" class="text-red-500 text-sm text-center"></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. Dasbor Admin (Sembunyi default) -->
+    <div id="admin-dashboard" class="hidden">
+        <!-- Header Admin -->
+        <header class="bg-white shadow-md sticky top-0 z-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center space-x-2">
+                        <img class="h-10 w-auto" src="https://firebasestorage.googleapis.com/v0/b/dkm-baitul-fattah.firebasestorage.app/o/Logo_Masjid.jpg?alt=media&token=9f7143f5-12f9-40b9-be93-2e539eec1a17" alt="Logo">
+                        <span class="text-xl font-bold text-green-700">Panel Admin DKM</span>
+                    </div>
+                    <div>
+                        <span id="admin-email" class="text-sm text-gray-600 mr-4"></span>
+                        <button id="logout-button" class="btn btn-danger text-sm">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Konten Admin -->
+        <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+            <!-- Navigasi Tab -->
+            <div class="bg-gray-100 mb-6 border-b border-gray-200">
+                <nav class="flex -mb-px space-x-1" aria-label="Tabs">
+                    <button class="tab-btn active" data-tab="berita">
+                        <i class="fas fa-newspaper mr-2"></i>Berita
+                    </button>
+                    <button class="tab-btn" data-tab="pengurus">
+                        <i class="fas fa-users mr-2"></i>Pengurus
+                    </button>
+                    <button class="tab-btn" data-tab="kajian">
+                        <i class="fas fa-book-open mr-2"></i>Jadwal Kajian
+                    </button>
+                    <button class="tab-btn" data-tab="jumat">
+                        <i class="fas fa-calendar-week mr-2"></i>Jadwal Jum'at
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Konten Tab -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <!-- 2.1 Manajemen Berita -->
+                <div id="berita-manager" class="tab-content active">
+                    <h3 class="text-2xl font-semibold mb-6">Manajemen Berita</h3>
+                    <form id="berita-form" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <input type="hidden" id="berita-id"> <!-- Untuk edit -->
+                        <div>
+                            <label for="berita-judul" class="block text-sm font-medium">Judul</label>
+                            <input type="text" id="berita-judul" required>
+                        </div>
+                        <div>
+                            <label for="berita-gambar" class="block text-sm font-medium">Gambar Berita</label>
+                            <input type="file" id="berita-gambar" accept="image/*" class="border-none p-0">
+                            <img id="berita-gambar-preview" src="" alt="Preview" class="hidden w-32 h-auto mt-2 rounded">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="berita-kutipan" class="block text-sm font-medium">Kutipan (Tampil di kartu)</label>
+                            <textarea id="berita-kutipan" rows="2" maxlength="150" placeholder="Ringkasan singkat, maks 150 karakter"></textarea>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="berita-isi" class="block text-sm font-medium">Isi Lengkap Berita</label>
+                            <textarea id="berita-isi" rows="8" placeholder="Tulis artikel lengkap di sini. Pisahkan paragraf dengan Enter."></textarea>
+                        </div>
+                        <div class="md:col-span-2 flex space-x-4">
+                            <button type="submit" id="berita-submit-btn" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Simpan Berita</button>
+                            <button type="button" id="berita-cancel-btn" class="btn btn-secondary hidden"><i class="fas fa-times mr-2"></i>Batal Edit</button>
+                        </div>
+                    </form>
+                    
+                    <h4 class="text-xl font-semibold mb-4">Daftar Berita</h4>
+                    <div class="overflow-x-auto">
+                        <table id="berita-table">
+                            <thead>
+                                <tr>
+                                    <th>Judul</th>
+                                    <th>Tanggal</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="berita-table-body">
+                                <!-- Data dimuat oleh JS -->
+                                <tr><td colspan="3" class="text-center py-4"><i class="fas fa-spinner fa-spin mr-2"></i>Memuat data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 2.2 Manajemen Pengurus -->
+                <div id="pengurus-manager" class="tab-content">
+                    <h3 class="text-2xl font-semibold mb-6">Manajemen Pengurus</h3>
+                    <form id="pengurus-form" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <input type="hidden" id="pengurus-id">
+                        <div>
+                            <label for="pengurus-nama" class="block text-sm font-medium">Nama</label>
+                            <input type="text" id="pengurus-nama" required>
+                        </div>
+                        <div>
+                            <label for="pengurus-jabatan" class="block text-sm font-medium">Jabatan</label>
+                            <input type="text" id="pengurus-jabatan" required>
+                        </div>
+                        <div>
+                            <label for="pengurus-urutan" class="block text-sm font-medium">Urutan Tampil</label>
+                            <input type="number" id="pengurus-urutan" value="99" required>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="pengurus-foto" class="block text-sm font-medium">Foto Pengurus</label>
+                            <input type="file" id="pengurus-foto" accept="image/*" class="border-none p-0">
+                            <img id="pengurus-foto-preview" src="" alt="Preview" class="hidden w-32 h-auto mt-2 rounded">
+                        </div>
+                        <div class="md:col-span-3 flex space-x-4">
+                            <button type="submit" id="pengurus-submit-btn" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Simpan Pengurus</button>
+                            <button type="button" id="pengurus-cancel-btn" class="btn btn-secondary hidden"><i class="fas fa-times mr-2"></i>Batal Edit</button>
+                        </div>
+                    </form>
+                    
+                    <h4 class="text-xl font-semibold mb-4">Daftar Pengurus</h4>
+                    <div class="overflow-x-auto">
+                        <table id="pengurus-table">
+                            <thead>
+                                <tr>
+                                    <th>Urutan</th>
+                                    <th>Nama</th>
+                                    <th>Jabatan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pengurus-table-body">
+                                <tr><td colspan="4" class="text-center py-4"><i class="fas fa-spinner fa-spin mr-2"></i>Memuat data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 2.3 Manajemen Kajian -->
+                <div id="kajian-manager" class="tab-content">
+                    <h3 class="text-2xl font-semibold mb-6">Manajemen Jadwal Kajian</h3>
+                    <form id="kajian-form" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <input type="hidden" id="kajian-id">
+                        <div>
+                            <label for="kajian-judul" class="block text-sm font-medium">Judul Kajian</label>
+                            <input type="text" id="kajian-judul" required>
+                        </div>
+                        <div>
+                            <label for="kajian-pemateri" class="block text-sm font-medium">Pemateri</label>
+                            <input type="text" id="kajian-pemateri" required>
+                        </div>
+                        <div>
+                            <label for="kajian-hari" class="block text-sm font-medium">Hari</label>
+                            <select id="kajian-hari" required>
+                                <option value="Senin">Senin</option>
+                                <option value="Selasa">Selasa</option>
+                                <option value="Rabu">Rabu</option>
+                                <option value="Kamis">Kamis</option>
+                                <option value="Jum'at">Jum'at</option>
+                                <option value="Sabtu">Sabtu</option>
+                                <option value="Ahad">Ahad</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="kajian-waktu" class="block text-sm font-medium">Waktu (cth: Ba'da Maghrib)</label>
+                            <input type="text" id="kajian-waktu" required>
+                        </div>
+                        <div class="md:col-span-2 flex space-x-4">
+                            <button type="submit" id="kajian-submit-btn" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Simpan Jadwal</button>
+                            <button type="button" id="kajian-cancel-btn" class="btn btn-secondary hidden"><i class="fas fa-times mr-2"></i>Batal Edit</button>
+                        </div>
+                    </form>
+                    
+                    <h4 class="text-xl font-semibold mb-4">Daftar Kajian Rutin</h4>
+                    <div class="overflow-x-auto">
+                        <table id="kajian-table">
+                            <thead>
+                                <tr>
+                                    <th>Hari, Waktu</th>
+                                    <th>Judul</th>
+                                    <th>Pemateri</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="kajian-table-body">
+                                <tr><td colspan="4" class="text-center py-4"><i class="fas fa-spinner fa-spin mr-2"></i>Memuat data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 2.4 Manajemen Jum'at -->
+                <div id="jumat-manager" class="tab-content">
+                    <h3 class="text-2xl font-semibold mb-6">Manajemen Jadwal Jum'at</h3>
+                    <form id="jumat-form" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <input type="hidden" id="jumat-id">
+                        <div>
+                            <label for="jumat-tanggal" class="block text-sm font-medium">Tanggal</label>
+                            <input type="date" id="jumat-tanggal" required>
+                        </div>
+                        <div>
+                            <label for="jumat-khotib" class="block text-sm font-medium">Khotib</label>
+                            <input type="text" id="jumat-khotib" required>
+                        </div>
+                        <div>
+                            <label for="jumat-tema" class="block text-sm font-medium">Tema (Opsional)</label>
+                            <input type="text" id="jumat-tema">
+                        </div>
+                        <div class="md:col-span-3 flex space-x-4">
+                            <button type="submit" id="jumat-submit-btn" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Simpan Jadwal</button>
+                            <button type="button" id="jumat-cancel-btn" class="btn btn-secondary hidden"><i class="fas fa-times mr-2"></i>Batal Edit</button>
+                        </div>
+                    </form>
+
+                    <h4 class="text-xl font-semibold mb-4">Daftar Jadwal Jum'at</h4>
+                    <div class="overflow-x-auto">
+                        <table id="jumat-table">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Khotib</th>
+                                    <th>Tema</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="jumat-table-body">
+                                <tr><td colspan="4" class="text-center py-4"><i class="fas fa-spinner fa-spin mr-2"></i>Memuat data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            onAuthStateChanged, 
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            getDocs, 
+            Timestamp, 
+            query, 
+            orderBy, 
+            addDoc,
+            doc,
+            deleteDoc,
+            setDoc // Untuk update/edit
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import {
+            getStorage,
+            ref,
+            uploadBytes,
+            getDownloadURL,
+            deleteObject
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+
+        // Konfigurasi Firebase (SAMA SEPERTI index.html)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAjxdJttqFC6ZC3kQylAdGb_0Cgw-iPlOU",
+            authDomain: "dkm-baitul-fattah.firebaseapp.com",
+            projectId: "dkm-baitul-fattah",
+            storageBucket: "dkm-baitul-fattah.appspot.com",
+            messagingSenderId: "404244659817",
+            appId: "1:404244659817:web:5ad17300c009d5ae09acf8"
+        };
+
+        // Inisialisasi Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        // Referensi Elemen
+        const loginContainer = document.getElementById('login-container');
+        const adminDashboard = document.getElementById('admin-dashboard');
+        const loginForm = document.getElementById('login-form');
+        const loginEmail = document.getElementById('login-email');
+        const loginPassword = document.getElementById('login-password');
+        const loginButton = document.getElementById('login-button');
+        const loginError = document.getElementById('login-error');
+        const logoutButton = document.getElementById('logout-button');
+        const adminEmail = document.getElementById('admin-email');
+        const toastContainer = document.getElementById('toast-container');
+
+        // Fungsi Notifikasi (Toast)
+        function showToast(message, isError = false) {
+            const toastId = 'toast-' + Date.now();
+            const bgColor = isError ? 'bg-red-600' : 'bg-green-600';
+            const toastHTML = `
+                <div id="${toastId}" class="max-w-xs ${bgColor} text-white text-sm rounded-lg shadow-lg p-4 transition-all duration-300 opacity-0 transform translate-x-10">
+                    ${message}
+                </div>
+            `;
+            toastContainer.innerHTML += toastHTML;
+
+            // Transisi masuk
+            setTimeout(() => {
+                document.getElementById(toastId).classList.remove('opacity-0', 'translate-x-10');
+            }, 10);
+
+            // Hilang otomatis
+            setTimeout(() => {
+                const toastEl = document.getElementById(toastId);
+                if (toastEl) {
+                    toastEl.classList.add('opacity-0');
+                    setTimeout(() => toastEl.remove(), 500);
+                }
+            }, 3000);
+        }
+
+        // --- 1. LOGIKA AUTENTIKASI (Pintu Gerbang) ---
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Pengguna login
+                loginContainer.classList.add('hidden');
+                adminDashboard.classList.remove('hidden');
+                adminEmail.textContent = user.email;
+                // Muat semua data setelah login berhasil
+                loadAllData();
+            } else {
+                // Pengguna logout
+                loginContainer.classList.remove('hidden');
+                adminDashboard.classList.add('hidden');
+                adminEmail.textContent = '';
+            }
+        });
+
+        // Handler Login
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            loginButton.disabled = true;
+            loginButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Logging in...';
+            loginError.textContent = '';
+
+            try {
+                await signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value);
+                // onAuthStateChanged akan menangani sisanya
+                showToast('Login berhasil!');
+            } catch (error) {
+                console.error("Login Gagal: ", error);
+                loginError.textContent = 'Email atau password salah.';
+                showToast('Login gagal!', true);
+            } finally {
+                loginButton.disabled = false;
+                loginButton.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Login';
+            }
+        });
+
+        // Handler Logout
+        logoutButton.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                showToast('Logout berhasil.');
+            } catch (error) {
+                console.error("Logout Gagal: ", error);
+                showToast('Logout gagal!', true);
+            }
+        });
+
+        // --- 2. LOGIKA TAB SWITCHING ---
+
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Nonaktifkan semua
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Aktifkan yang diklik
+                const tabId = button.dataset.tab;
+                button.classList.add('active');
+                document.getElementById(tabId + '-manager').classList.add('active');
+            });
+        });
+
+        // --- 3. FUNGSI UTILITY (Upload File) ---
+        async function uploadFile(file, path) {
+            if (!file) return null;
+            
+            // Buat nama file unik
+            const fileName = `${Date.now()}-${file.name}`;
+            const storageRef = ref(storage, `${path}/${fileName}`);
+            
+            try {
+                // Upload
+                const snapshot = await uploadBytes(storageRef, file);
+                // Dapatkan URL
+                const downloadURL = await getDownloadURL(snapshot.ref);
+                return downloadURL;
+            } catch (error) {
+                console.error("File Upload Gagal: ", error);
+                showToast(`Gagal mengupload file: ${error.message}`, true);
+                return null;
+            }
+        }
+        
+        // Fungsi untuk format tanggal (YYYY-MM-DD)
+        function formatDateForInput(timestamp) {
+            if (!timestamp) return '';
+            const date = timestamp.toDate();
+            // Atasi masalah zona waktu
+            const offset = date.getTimezoneOffset() * 60000;
+            const localDate = new Date(date.getTime() - offset);
+            return localDate.toISOString().split('T')[0];
+        }
+
+        // --- 4. MANAJEMEN KONTEN (CRUD) ---
+
+        // Fungsi Load Data Global
+        function loadAllData() {
+            loadBerita();
+            loadPengurus();
+            loadKajian();
+            loadJumat();
+        }
+
+        // --- 4.1. MANAJEMEN BERITA ---
+        const beritaForm = document.getElementById('berita-form');
+        const beritaTableBody = document.getElementById('berita-table-body');
+        const beritaIdField = document.getElementById('berita-id');
+        const beritaSubmitBtn = document.getElementById('berita-submit-btn');
+        const beritaCancelBtn = document.getElementById('berita-cancel-btn');
+        const beritaGambarPreview = document.getElementById('berita-gambar-preview');
+        const beritaGambarInput = document.getElementById('berita-gambar');
+
+        beritaGambarInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                beritaGambarPreview.src = URL.createObjectURL(file);
+                beritaGambarPreview.classList.remove('hidden');
+            }
+        });
+        
+        function resetBeritaForm() {
+            beritaForm.reset();
+            beritaIdField.value = '';
+            beritaGambarPreview.classList.add('hidden');
+            beritaGambarPreview.src = '';
+            beritaSubmitBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Simpan Berita';
+            beritaCancelBtn.classList.add('hidden');
+        }
+        beritaCancelBtn.addEventListener('click', resetBeritaForm);
+
+        // LOAD Berita
+        async function loadBerita() {
+            beritaTableBody.innerHTML = '<tr><td colspan="3" class="text-center py-4"><i class="fas fa-spinner fa-spin mr-2"></i>Memuat data...</td></tr>';
+            try {
+                const q = query(collection(db, "berita"), orderBy("tanggal", "desc"));
+                const querySnapshot = await getDocs(q);
+                if (querySnapshot.empty) {
+                    beritaTableBody.innerHTML = '<tr><td colspan="3" class="text-center py-4">Belum ada berita.</td></tr>';
+                    return;
+                }
+                
+                beritaTableBody.innerHTML = '';
+                querySnapshot.forEach(doc => {
+                    const berita = doc.data();
+                    const tanggal = berita.tanggal?.toDate().toLocaleDateString('id-ID') || 'T/A';
+                    beritaTableBody.innerHTML += `
+                        <tr data-id="${doc.id}">
+                            <td>${berita.judul}</td>
+                            <td>${tanggal}</td>
+                            <td class="space-x-2">
+                                <button class="edit-berita-btn btn btn-secondary btn-sm"><i class="fas fa-edit"></i></button>
+                                <button class="delete-berita-btn btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error load berita: ", error);
+                showToast("Gagal memuat berita", true);
+            }
+        }
+
+        // ADD/EDIT Berita
+        beritaForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            beritaSubmitBtn.disabled = true;
+            beritaSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Menyimpan...';
+
+            const docId = beritaIdField.value;
+            const file = document.getElementById('berita-gambar').files[0];
+            let gambarUrl = beritaGambarPreview.src; // URL lama (jika edit)
+
+            try {
+                // 1. Upload gambar jika ada file baru
+                if (file) {
+                    gambarUrl = await uploadFile(file, 'berita');
+                    if (!gambarUrl) throw new Error('Upload gambar gagal.');
+                }
+                
+                // 2. Siapkan data
+                const data = {
+                    judul: document.getElementById('berita-judul').value,
+                    kutipan: document.getElementById('berita-kutipan').value,
+                    isi_lengkap: document.getElementById('berita-isi').value,
+                    gambarUrl: gambarUrl,
+                    tanggal: Timestamp.now() // Selalu update tanggal saat disimpan
+                };
+                
+                // 3. Simpan ke Firestore
+                if (docId) {
+                    // Edit
+                    await setDoc(doc(db, "berita", docId), data, { merge: true });
+                    showToast('Berita berhasil diperbarui!');
+                } else {
+                    // Add
+                    await addDoc(collection(db, "berita"), data);
+                    showToast('Berita berhasil ditambahkan!');
+                }
+                
+                resetBeritaForm();
+                loadBerita();
+
+            } catch (error) {
+                console.error("Error simpan berita: ", error);
+                showToast(`Gagal menyimpan berita: ${error.message}`, true);
+            } finally {
+                beritaSubmitBtn.disabled = false;
+                beritaSubmitBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Simpan Berita';
+            }
+        });
+        
+        // EDIT (fill form) & DELETE Berita
+        beritaTableBody.addEventListener('click', async (e) => {
+            const row = e.target.closest('tr');
+            if (!row) return;
+            const docId = row.dataset.id;
+            
+            // Delete
+            if (e.target.closest('.delete-berita-btn')) {
+                if (confirm('Anda yakin ingin menghapus berita ini?')) {
+                    try {
+                        await deleteDoc(doc(db, "berita", docId));
+                        showToast('Berita berhasil dihapus.');
+                        loadBerita();
+                    } catch (error) {
+                        console.error("Error hapus berita: ", error);
+                        showToast('Gagal menghapus berita.', true);
+                    }
+                }
+            }
+            
+            // Edit (Fill Form)
+            if (e.target.closest('.edit-berita-btn')) {
+                const data = (await getDocs(collection(db, "berita"))).docs.find(d => d.id === docId)?.data();
+                if(data) {
+                    beritaIdField.value = docId;
+                    document.getElementById('berita-judul').value = data.judul;
+                    document.getElementById('berita-kutipan').value = data.kutipan;
+                    document.getElementById('berita-isi').value = data.isi_lengkap;
+                    if(data.gambarUrl) {
+                        beritaGambarPreview.src = data.gambarUrl;
+                        beritaGambarPreview.classList.remove('hidden');
+                    }
+                    beritaSubmitBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Update Berita';
+                    beritaCancelBtn.classList.remove('hidden');
+                    window.scrollTo(0, 0); // Scroll ke atas
+                }
+            }
+        });
+
+
+        // --- 4.2. MANAJEMEN PENGURUS ---
+        const pengurusForm = document.getElementById('pengurus-form');
+        const pengurusTableBody = document.getElementById('pengurus-table-body');
+        const pengurusIdField = document.getElementById('pengurus-id');
+        const pengurusSubmitBtn = document.getElementById('pengurus-submit-btn');
+        const pengurusCancelBtn = document.getElementById('pengurus-cancel-btn');
+        const pengurusFotoPreview = document.getElementById('pengurus-foto-preview');
+        const pengurusFotoInput = document.getElementById('pengurus-foto');
+
+        pengurusFotoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                pengurusFotoPreview.src = URL.createObjectURL(file);
+                pengurusFotoPreview.classList.remove('hidden');
+            }
+        });
+        
+        function resetPengurusForm() {
+            pengurusForm.reset();
+            pengurusIdField.value = '';
+            pengurusFotoPreview.classList.add('hidden');
+            pengurusFotoPreview.src = '';
+            pengurusSubmitBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Simpan Pengurus';
+            pengurusCancelBtn.classList.add('hidden');
+        }
+        pengurusCancelBtn.addEventListener('click', resetPengurusForm);
+        
+        // LOAD Pengurus
+        async function loadPengurus() {
+            pengurusTableBody.innerHTML = '<tr><td colspan="4" class="text-center py-4"><i class="fas fa-spinner fa-spin mr-2"></i>Memuat data...</td></tr>';
+            try {
+                const q = query(collection(db, "pengurus"), orderBy("urutan", "asc"));
+                const querySnapshot = await getDocs(q);
+                if (querySnapshot.empty) {
+                    pengurusTableBody.innerHTML = '<tr><td colspan="4" class="text-center py-4">Belum ada data pengurus.</td></tr>';
+                    return;
+                }
+                
+                pengurusTableBody.innerHTML = '';
+                querySnapshot.forEach(doc => {
+                    const pengurus = doc.data();
+                    pengurusTableBody.innerHTML += `
+                        <tr data-id="${doc.id}">
+                            <td>${pengurus.urutan}</td>
+                            <td>${pengurus.nama}</td>
+                            <td>${pengurus.jabatan}</td>
+                            <td class="space-x-2">
+                                <button class="edit-pengurus-btn btn btn-secondary btn-sm"><i class="fas fa-edit"></i></button>
+                                <button class="delete-pengurus-btn btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error load pengurus: ", error);
+                showToast("Gagal memuat data pengurus", true);
+            }
+        }
+        
+        // ADD/EDIT Pengurus
+        pengurusForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            pengurusSubmitBtn.disabled = true;
+            pengurusSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Menyimpan...';
+
+            const docId = pengurusIdField.value;
+            const file = pengurusFotoInput.files[0];
+            let fotoUrl = pengurusFotoPreview.src;
+
+            try {
+                if (file) {
+                    fotoUrl = await uploadFile(file, 'pengurus');
+                    if (!fotoUrl) throw new Error('Upload foto gagal.');
+                }
+                
+                const data = {
+                    nama: document.getElementById('pengurus-nama').value,
+                    jabatan: document.getElementById('pengurus-jabatan').value,
+                    urutan: parseInt(document.getElementById('pengurus-urutan').value, 10),
+                    fotoUrl: fotoUrl
+                };
+                
+                if (docId) {
+                    await setDoc(doc(db, "pengurus", docId), data, { merge: true });
+                    showToast('Data pengurus berhasil diperbarui!');
+                } else {
+                    await addDoc(collection(db, "pengurus"), data);
+                    showToast('Data pengurus berhasil ditambahkan!');
+                }
+                
+                resetPengurusForm();
+                loadPengurus();
+
+            } catch (error) {
+                console.error("Error simpan pengurus: ", error);
+                showToast(`Gagal menyimpan data pengurus: ${error.message}`, true);
+            } finally {
+                pengurusSubmitBtn.disabled = false;
+                pengurusSubmitBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Simpan Pengurus';
+            }
+        });
+        
+        // EDIT (fill form) & DELETE Pengurus
+        pengurusTableBody.addEventListener('click', async (e) => {
+            const row = e.target.closest('tr');
+            if (!row) return;
+            const docId = row.dataset.id;
+            
+            // Delete
+            if (e.target.closest('.delete-pengurus-btn')) {
+                if (confirm('Anda yakin ingin menghapus pengurus ini?')) {
+                    try {
+                        await deleteDoc(doc(db, "pengurus", docId));
+                        showToast('Data pengurus berhasil dihapus.');
+                        loadPengurus();
+                    } catch (error) {
+                        console.error("Error hapus pengurus: ", error);
+                        showToast('Gagal menghapus data pengurus.', true);
+                    }
+                }
+            }
+            
+            // Edit (Fill Form)
+            if (e.target.closest('.edit-pengurus-btn')) {
+                const data = (await getDocs(collection(db, "pengurus"))).docs.find(d => d.id === docId)?.data();
+                if(data) {
+                    pengurusIdField.value = docId;
+                    document.getElementById('pengurus-nama').value = data.nama;
+                    document.getElementById('pengurus-jabatan').value = data.jabatan;
+                    document.getElementById('pengurus-urutan').value = data.urutan;
+                    if(data.fotoUrl) {
+                        pengurusFotoPreview.src = data.fotoUrl;
+                        pengurusFotoPreview.classList.remove('hidden');
+                    }
+                    pengurusSubmitBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Update Pengurus';
+                    pengurusCancelBtn.classList.remove('hidden');
+                    window.scrollTo(0, 0);
+                }
+            }
+        });
+
+
+        // --- 4.3. MANAJEMEN KAJIAN ---
+        const kajianForm = document.getElementById('kajian-form');
+        const kajianTableBody = document.getElementById('kajian-table-body');
+        const kajianIdField = document.getElementById('kajian-id');
+        const kajianSubmitBtn = document.getElementById('kajian-submit-btn');
+        const kajianCancelBtn = document.getElementById('kajian-cancel-btn');
+
+        function resetKajianForm() {
+            kajianForm.reset();
+            kajianIdField.value = '';
+            kajianSubmitBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Simpan Jadwal';
+            kajianCancelBtn.classList.add('hidden');
+        }
+        kajianCancelBtn.addEventListener('click', resetKajianForm);
+
+        // LOAD Kajian
+        async function loadKajian() {
+            kajianTableBody.innerHTML = '<tr><td colspan="4" class="text-center py-4"><i class="fas fa-spinner fa-spin mr-2"></i>Memuat data...</td></tr>';
+            try {
+                const q = query(collection(db, "jadwal_kajian"));
+                const querySnapshot = await getDocs(q);
+                if (querySnapshot.empty) {
+                    kajianTableBody.innerHTML = '<tr><td colspan="4" class="text-center py-4">Belum ada jadwal kajian.</td></tr>';
+                    return;
+                }
+                
+                kajianTableBody.innerHTML = '';
+                querySnapshot.forEach(doc => {
+                    const kajian = doc.data();
+                    kajianTableBody.innerHTML += `
+                        <tr data-id="${doc.id}">
+                            <td>${kajian.hari}, ${kajian.waktu}</td>
+                            <td>${kajian.judul}</td>
+                            <td>${kajian.pemateri}</td>
+                            <td class="space-x-2">
+                                <button class="edit-kajian-btn btn btn-secondary btn-sm"><i class="fas fa-edit"></i></button>
+                                <button class="delete-kajian-btn btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error load kajian: ", error);
+                showToast("Gagal memuat jadwal kajian", true);
+            }
+        }
+        
+        // ADD/EDIT Kajian
+        kajianForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            kajianSubmitBtn.disabled = true;
+
+            const docId = kajianIdField.value;
+            const data = {
+                judul: document.getElementById('kajian-judul').value,
+                pemateri: document.getElementById('kajian-pemateri').value,
+                hari: document.getElementById('kajian-hari').value,
+                waktu: document.getElementById('kajian-waktu').value,
+            };
+
+            try {
+                if (docId) {
+                    await setDoc(doc(db, "jadwal_kajian", docId), data);
+                    showToast('Jadwal kajian berhasil diperbarui!');
+                } else {
+                    await addDoc(collection(db, "jadwal_kajian"), data);
+                    showToast('Jadwal kajian berhasil ditambahkan!');
+                }
+                resetKajianForm();
+                loadKajian();
+            } catch (error) {
+                console.error("Error simpan kajian: ", error);
+                showToast('Gagal menyimpan jadwal kajian.', true);
+            } finally {
+                kajianSubmitBtn.disabled = false;
+            }
+        });
+        
+        // EDIT (fill form) & DELETE Kajian
+        kajianTableBody.addEventListener('click', async (e) => {
+            const row = e.target.closest('tr');
+            if (!row) return;
+            const docId = row.dataset.id;
+            
+            if (e.target.closest('.delete-kajian-btn')) {
+                if (confirm('Anda yakin ingin menghapus jadwal ini?')) {
+                    try {
+                        await deleteDoc(doc(db, "jadwal_kajian", docId));
+                        showToast('Jadwal kajian berhasil dihapus.');
+                        loadKajian();
+                    } catch (error) {
+                        showToast('Gagal menghapus jadwal.', true);
+                    }
+                }
+            }
+            
+            if (e.target.closest('.edit-kajian-btn')) {
+                const data = (await getDocs(collection(db, "jadwal_kajian"))).docs.find(d => d.id === docId)?.data();
+                if(data) {
+                    kajianIdField.value = docId;
+                    document.getElementById('kajian-judul').value = data.judul;
+                    document.getElementById('kajian-pemateri').value = data.pemateri;
+                    document.getElementById('kajian-hari').value = data.hari;
+                    document.getElementById('kajian-waktu').value = data.waktu;
+                    
+                    kajianSubmitBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Update Jadwal';
+                    kajianCancelBtn.classList.remove('hidden');
+                    window.scrollTo(0, 0);
+                }
+            }
+        });
+
+
+        // --- 4.4. MANAJEMEN JUM'AT ---
+        const jumatForm = document.getElementById('jumat-form');
+        const jumatTableBody = document.getElementById('jumat-table-body');
+        const jumatIdField = document.getElementById('jumat-id');
+        const jumatSubmitBtn = document.getElementById('jumat-submit-btn');
+        const jumatCancelBtn = document.getElementById('jumat-cancel-btn');
+
+        function resetJumatForm() {
+            jumatForm.reset();
+            jumatIdField.value = '';
+            jumatSubmitBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Simpan Jadwal';
+            jumatCancelBtn.classList.add('hidden');
+        }
+        jumatCancelBtn.addEventListener('click', resetJumatForm);
+        
+        // LOAD Jum'at
+        async function loadJumat() {
+            jumatTableBody.innerHTML = '<tr><td colspan="4" class="text-center py-4"><i class="fas fa-spinner fa-spin mr-2"></i>Memuat data...</td></tr>';
+            try {
+                const q = query(collection(db, "jadwal_jumat"), orderBy("tanggal", "desc"));
+                const querySnapshot = await getDocs(q);
+                if (querySnapshot.empty) {
+                    jumatTableBody.innerHTML = '<tr><td colspan="4" class="text-center py-4">Belum ada jadwal Jum\'at.</td></tr>';
+                    return;
+                }
+                
+                jumatTableBody.innerHTML = '';
+                querySnapshot.forEach(doc => {
+                    const jumat = doc.data();
+                    const tanggal = jumat.tanggal?.toDate().toLocaleDateString('id-ID') || 'T/A';
+                    jumatTableBody.innerHTML += `
+                        <tr data-id="${doc.id}">
+                            <td>${tanggal}</td>
+                            <td>${jumat.khotib}</td>
+                            <td>${jumat.tema || '-'}</td>
+                            <td class="space-x-2">
+                                <button class="edit-jumat-btn btn btn-secondary btn-sm"><i class="fas fa-edit"></i></button>
+                                <button class="delete-jumat-btn btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error load jumat: ", error);
+                showToast("Gagal memuat jadwal Jum'at", true);
+            }
+        }
+        
+        // ADD/EDIT Jum'at
+        jumatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            jumatSubmitBtn.disabled = true;
+
+            const docId = jumatIdField.value;
+            const data = {
+                tanggal: Timestamp.fromDate(new Date(document.getElementById('jumat-tanggal').value)),
+                khotib: document.getElementById('jumat-khotib').value,
+                tema: document.getElementById('jumat-tema').value
+            };
+
+            try {
+                if (docId) {
+                    await setDoc(doc(db, "jadwal_jumat", docId), data);
+                    showToast('Jadwal Jum\'at berhasil diperbarui!');
+                } else {
+                    await addDoc(collection(db, "jadwal_jumat"), data);
+                    showToast('Jadwal Jum\'at berhasil ditambahkan!');
+                }
+                resetJumatForm();
+                loadJumat();
+            } catch (error) {
+                console.error("Error simpan jumat: ", error);
+                showToast('Gagal menyimpan jadwal Jum\'at.', true);
+            } finally {
+                jumatSubmitBtn.disabled = false;
+            }
+        });
+        
+        // EDIT (fill form) & DELETE Jum'at
+        jumatTableBody.addEventListener('click', async (e) => {
+            const row = e.target.closest('tr');
+            if (!row) return;
+            const docId = row.dataset.id;
+            
+            if (e.target.closest('.delete-jumat-btn')) {
+                if (confirm('Anda yakin ingin menghapus jadwal ini?')) {
+                    try {
+                        await deleteDoc(doc(db, "jadwal_jumat", docId));
+                        showToast('Jadwal Jum\'at berhasil dihapus.');
+                        loadJumat();
+                    } catch (error) {
+                        showToast('Gagal menghapus jadwal.', true);
+                    }
+                }
+            }
+            
+            if (e.target.closest('.edit-jumat-btn')) {
+                const data = (await getDocs(collection(db, "jadwal_jumat"))).docs.find(d => d.id === docId)?.data();
+                if(data) {
+                    jumatIdField.value = docId;
+                    document.getElementById('jumat-tanggal').value = formatDateForInput(data.tanggal);
+                    document.getElementById('jumat-khotib').value = data.khotib;
+                    document.getElementById('jumat-tema').value = data.tema;
+                    
+                    jumatSubmitBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Update Jadwal';
+                    jumatCancelBtn.classList.remove('hidden');
+                    window.scrollTo(0, 0);
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
